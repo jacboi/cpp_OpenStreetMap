@@ -31,7 +31,7 @@ int main(int argc, const char **argv)
 {    
     // default values
     std::string osm_data_file = "../map.osm";
-    float x = 10, y = 10, xg = 90, yg = 90;
+    float start_x = 10, start_y = 10, end_x = 90, end_y = 90;
 
     // slim cli - does not validate...
     if( argc > 1 ) {
@@ -40,14 +40,15 @@ int main(int argc, const char **argv)
             if (++i < argc) {
                 if (view == "map" || view =="-f")
                     osm_data_file = argv[i];
-                if (view == "-x" || view == "-x_start")
-                    x = std::stof(argv[i]);
-                if (view == "-y" || view == "-y_start")
-                    y = std::stof(argv[i]);
-                if (view == "-xg" || "-x_goal")
-                    xg = std::stof(argv[i]);
-                if (view == "-yg" || "-y_goal")
-                    yg = std::stof(argv[i]);
+                // seemed easiest to run as cli
+                // else if (view == "-x" || view == "-x_start")
+                //     start_x = std::stof(argv[i]);
+                // else if (view == "-y" || view == "-y_start")
+                //     start_y = std::stof(argv[i]);
+                // else if (view == "-xg" || "-x_goal")
+                //     end_x = std::stof(argv[i]);
+                // else if (view == "-yg" || "-y_goal")
+                //     end_y = std::stof(argv[i]);
             }
         }
     }
@@ -74,11 +75,19 @@ int main(int argc, const char **argv)
 
     // Build Model.
     RouteModel model{osm_data};
+    std::cout << "input start_x" << std::endl;
+    std::cin >> start_x;
+    std::cout << "input start_y" << std::endl;
+    std::cin >> start_y;
+    std::cout << "input end_x" << std::endl;
+    std::cin >> end_x;
+    std::cout << "input end_x" << std::endl;
+    std::cin >> end_x;
 
-    std::cout << "start_x: " << x << " start_y: "  << y << " end_x: " << xg << " end_y: " << yg << std::endl;
+    std::cout << "start_x: " << start_x << " start_y: "  << start_y << " end_x: " << end_x << " end_y: " << end_y << std::endl;
 
     // Create RoutePlanner object and perform A* search.
-    RoutePlanner route_planner{model, x,y,xg,yg};
+    RoutePlanner route_planner{model, start_x, start_y, end_x, end_y};
     route_planner.AStarSearch();
 
     std::cout << "Distance: " << route_planner.GetDistance() << " meters. \n";
